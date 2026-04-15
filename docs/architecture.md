@@ -1,33 +1,11 @@
-# Web Gajim V3 — Architecture Documentation
+# Conjiweb 鈥?Architecture Documentation
 
 ## Overview
 
-Web Gajim V3 is a seven-layer full-stack XMPP web client platform.
+Conjiweb is a seven-layer full-stack XMPP web client platform.
 
 ```
-┌─────────────────────────────────────────────────────┐
-│  Layer 1: Presentation                              │
-│  React 18 + TypeScript + Tailwind CSS + Vite        │
-├─────────────────────────────────────────────────────┤
-│  Layer 2: Application State                         │
-│  Zustand + TanStack Query + IndexedDB (Dexie.js)    │
-├─────────────────────────────────────────────────────┤
-│  Layer 3: XMPP Adapter                              │
-│  XmppClient (Strophe.js wrapper) + xmppBridge       │
-├─────────────────────────────────────────────────────┤
-│  Layer 4: Business API                              │
-│  FastAPI + SQLAlchemy + Alembic + WebSocket         │
-├─────────────────────────────────────────────────────┤
-│  Layer 5: Data                                      │
-│  PostgreSQL (primary) + Redis (cache) + IndexedDB   │
-├─────────────────────────────────────────────────────┤
-│  Layer 6: Object Storage                            │
-│  MinIO (S3-compatible file storage)                 │
-├─────────────────────────────────────────────────────┤
-│  Layer 7: XMPP Server                               │
-│  Prosody (XMPP, MUC, MAM, HTTP Upload, WebSocket)  │
-└─────────────────────────────────────────────────────┘
-```
+鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? Layer 1: Presentation                              鈹?鈹? React 18 + TypeScript + Tailwind CSS + Vite        鈹?鈹溾攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? Layer 2: Application State                         鈹?鈹? Zustand + TanStack Query + IndexedDB (Dexie.js)    鈹?鈹溾攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? Layer 3: XMPP Adapter                              鈹?鈹? XmppClient (Strophe.js wrapper) + xmppBridge       鈹?鈹溾攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? Layer 4: Business API                              鈹?鈹? FastAPI + SQLAlchemy + Alembic + WebSocket         鈹?鈹溾攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? Layer 5: Data                                      鈹?鈹? PostgreSQL (primary) + Redis (cache) + IndexedDB   鈹?鈹溾攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? Layer 6: Object Storage                            鈹?鈹? MinIO (S3-compatible file storage)                 鈹?鈹溾攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? Layer 7: XMPP Server                               鈹?鈹? Prosody (XMPP, MUC, MAM, HTTP Upload, WebSocket)  鈹?鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?```
 
 ## Frontend Architecture
 
@@ -54,22 +32,22 @@ Web Gajim V3 is a seven-layer full-stack XMPP web client platform.
 ### Module Structure
 ```
 src/
-├── app/           App.tsx, router setup
-├── components/    Sidebar, TopBar, Avatar, RightPanel, ErrorBoundary
-├── hooks/         useTypingIndicator, useMAM, useXmppReconnect, useKeyboardShortcuts
-├── layouts/       MainLayout (3-panel shell)
-├── modules/
-│   ├── chat/      ConversationList, MessageView
-│   ├── roster/    RosterPanel (contacts)
-│   ├── group/     GroupPanel (MUC rooms)
-│   ├── media/     FileUpload, ImagePreview, FileCard
-│   ├── search/    GlobalSearch
-│   └── notification/ NotificationPanel
-├── pages/         LoginPage, ChatPage, SettingsPage, PluginsPage, AdminPage
-├── services/      xmppAdapter, xmppBridge, apiSocket, api, localDb
-├── stores/        accountStore, chatStore, rosterStore, notificationStore
-├── styles/        globals.css (Tailwind + custom classes)
-└── utils/         helpers.ts
+鈹溾攢鈹€ app/           App.tsx, router setup
+鈹溾攢鈹€ components/    Sidebar, TopBar, Avatar, RightPanel, ErrorBoundary
+鈹溾攢鈹€ hooks/         useTypingIndicator, useMAM, useXmppReconnect, useKeyboardShortcuts
+鈹溾攢鈹€ layouts/       MainLayout (3-panel shell)
+鈹溾攢鈹€ modules/
+鈹?  鈹溾攢鈹€ chat/      ConversationList, MessageView
+鈹?  鈹溾攢鈹€ roster/    RosterPanel (contacts)
+鈹?  鈹溾攢鈹€ group/     GroupPanel (MUC rooms)
+鈹?  鈹溾攢鈹€ media/     FileUpload, ImagePreview, FileCard
+鈹?  鈹溾攢鈹€ search/    GlobalSearch
+鈹?  鈹斺攢鈹€ notification/ NotificationPanel
+鈹溾攢鈹€ pages/         LoginPage, ChatPage, SettingsPage, PluginsPage, AdminPage
+鈹溾攢鈹€ services/      xmppAdapter, xmppBridge, apiSocket, api, localDb
+鈹溾攢鈹€ stores/        accountStore, chatStore, rosterStore, notificationStore
+鈹溾攢鈹€ styles/        globals.css (Tailwind + custom classes)
+鈹斺攢鈹€ utils/         helpers.ts
 ```
 
 ## Backend Architecture
@@ -105,16 +83,16 @@ src/
 
 | Feature | XEP | Status |
 |---------|-----|--------|
-| Multi-account | — | ✅ |
-| MUC group chat | XEP-0045 | ✅ |
-| Message Archive | XEP-0313 | ✅ |
-| Typing indicators | XEP-0085 | ✅ |
-| Delivery receipts | XEP-0184 | ✅ |
-| Contact management | RFC 6121 | ✅ |
-| Presence | RFC 6121 | ✅ |
-| HTTP Upload | XEP-0363 | ✅ (via MinIO) |
-| OMEMO encryption | XEP-0384 | 🔜 (future) |
-| Push notifications | XEP-0357 | 🔜 (future) |
+| Multi-account | 鈥?| 鉁?|
+| MUC group chat | XEP-0045 | 鉁?|
+| Message Archive | XEP-0313 | 鉁?|
+| Typing indicators | XEP-0085 | 鉁?|
+| Delivery receipts | XEP-0184 | 鉁?|
+| Contact management | RFC 6121 | 鉁?|
+| Presence | RFC 6121 | 鉁?|
+| HTTP Upload | XEP-0363 | 鉁?(via MinIO) |
+| OMEMO encryption | XEP-0384 | 馃敎 (future) |
+| Push notifications | XEP-0357 | 馃敎 (future) |
 
 ## Plugin System
 

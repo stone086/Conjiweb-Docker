@@ -1,4 +1,4 @@
--- Web Gajim V3 - Prosody Configuration
+-- Conjiweb - Prosody Configuration
 
 admins = { "admin@localhost" }
 

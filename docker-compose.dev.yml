@@ -1,14 +1,14 @@
 version: "3.9"
-# Development override — run infra only, dev servers locally
+# Development override 鈥?run infra only, dev servers locally
 # Usage: docker compose -f docker-compose.dev.yml up -d
 
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: wgv3-postgres-dev
+    container_name: conjiweb-postgres-dev
     environment:
-      POSTGRES_DB: webgajim
-      POSTGRES_USER: webgajim
+      POSTGRES_DB: conjiweb
+      POSTGRES_USER: conjiweb
       POSTGRES_PASSWORD: changeme
     ports:
       - "5432:5432"
@@ -17,7 +17,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: wgv3-redis-dev
+    container_name: conjiweb-redis-dev
     command: redis-server --requirepass changeme
     ports:
       - "6379:6379"
@@ -26,7 +26,7 @@ services:
 
   minio:
     image: minio/minio:latest
-    container_name: wgv3-minio-dev
+    container_name: conjiweb-minio-dev
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: minioadmin
@@ -39,7 +39,7 @@ services:
 
   prosody:
     image: prosody/prosody:0.12
-    container_name: wgv3-prosody-dev
+    container_name: conjiweb-prosody-dev
     volumes:
       - ./infra/prosody/prosody.cfg.lua:/etc/prosody/prosody.cfg.lua:ro
       - prosody_dev_data:/var/lib/prosody

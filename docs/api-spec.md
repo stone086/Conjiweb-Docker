@@ -1,4 +1,4 @@
-# Web Gajim V3 — API Reference
+# Conjiweb 鈥?API Reference
 
 Base URL: `http://localhost:8000` (dev) or `https://api.yourdomain.com` (prod)
 
@@ -179,4 +179,4 @@ Messages from server:
 - `{ "type": "plugin.event", "plugin_id": "...", "payload": {...} }`
 
 Messages from client:
-- `{ "type": "ping" }` → server responds with `{ "type": "pong" }`
+- `{ "type": "ping" }` 鈫?server responds with `{ "type": "pong" }`

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate PWA icons for Web Gajim V3.
+Generate PWA icons for Conjiweb.
 Run: python3 infra/scripts/gen_icons.py
 Requires: Pillow (pip install Pillow)
 """

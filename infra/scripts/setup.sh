@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Web Gajim V3 - Quick Setup Script
+# Conjiweb - Quick Setup Script
 set -e
 
 echo "========================================"
-echo "  Web Gajim V3 - Setup"
+echo "  Conjiweb - Setup"
 echo "========================================"
 
 # Check dependencies
@@ -51,7 +51,7 @@ echo "  Default admin login: admin / admin"
 echo "  (Change this in apps/api/app/api/routers/auth.py)"
 echo ""
 echo "  To create an XMPP user (Prosody):"
-echo "    docker exec -it wgv3-prosody prosodyctl adduser user@localhost"
+echo "    docker exec -it conjiweb-prosody prosodyctl adduser user@localhost"
 echo ""
 echo "  View logs:"
 echo "    docker compose logs -f"

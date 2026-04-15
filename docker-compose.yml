@@ -3,11 +3,11 @@ version: "3.9"
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: wgv3-postgres
+    container_name: conjiweb-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-webgajim}
-      POSTGRES_USER: ${POSTGRES_USER:-webgajim}
+      POSTGRES_DB: ${POSTGRES_DB:-conjiweb}
+      POSTGRES_USER: ${POSTGRES_USER:-conjiweb}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -16,7 +16,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: wgv3-redis
+    container_name: conjiweb-redis
     restart: unless-stopped
     command: redis-server --requirepass ${REDIS_PASSWORD:-changeme}
     volumes:
@@ -26,7 +26,7 @@ services:
 
   minio:
     image: minio/minio:latest
-    container_name: wgv3-minio
+    container_name: conjiweb-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
@@ -42,7 +42,7 @@ services:
 
   prosody:
     image: prosody/prosody:0.12
-    container_name: wgv3-prosody
+    container_name: conjiweb-prosody
     restart: unless-stopped
     volumes:
       - ./infra/prosody/prosody.cfg.lua:/etc/prosody/prosody.cfg.lua:ro
@@ -59,15 +59,15 @@ services:
     build:
       context: ./apps/api
       dockerfile: Dockerfile
-    container_name: wgv3-api
+    container_name: conjiweb-api
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-webgajim}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-webgajim}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-conjiweb}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-conjiweb}
       REDIS_URL: redis://:${REDIS_PASSWORD:-changeme}@redis:6379/0
       MINIO_ENDPOINT: minio:9000
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-changeme123}
-      MINIO_BUCKET: ${MINIO_BUCKET:-webgajim-files}
+      MINIO_BUCKET: ${MINIO_BUCKET:-conjiweb-files}
       SECRET_KEY: ${SECRET_KEY:-supersecretkey}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
     depends_on:
@@ -83,7 +83,7 @@ services:
     build:
       context: ./apps/web
       dockerfile: Dockerfile
-    container_name: wgv3-web
+    container_name: conjiweb-web
     restart: unless-stopped
     environment:
       VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
@@ -93,7 +93,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: wgv3-nginx
+    container_name: conjiweb-nginx
     restart: unless-stopped
     ports:
       - "80:80"

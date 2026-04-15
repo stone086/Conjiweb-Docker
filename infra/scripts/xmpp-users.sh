@@ -2,7 +2,7 @@
 # Prosody user management helper
 set -e
 
-CONTAINER="wgv3-prosody"
+CONTAINER="conjiweb-prosody"
 DOMAIN="${DOMAIN:-localhost}"
 
 usage() {

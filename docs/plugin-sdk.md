@@ -1,4 +1,4 @@
-# Web Gajim V3 — Plugin SDK Guide
+# Conjiweb 鈥?Plugin SDK Guide
 
 ## Overview
 
@@ -10,9 +10,9 @@ Plugins extend the client with new UI, message processing, commands, and backend
 
 ```
 plugins/my-plugin/
-├── index.ts        Main plugin file
-├── package.json    (optional, for npm deps)
-└── README.md
+鈹溾攢鈹€ index.ts        Main plugin file
+鈹溾攢鈹€ package.json    (optional, for npm deps)
+鈹斺攢鈹€ README.md
 ```
 
 ### 2. Implement the Plugin interface
@@ -176,7 +176,7 @@ Declare required permissions in your manifest:
 
 ## Enabling Plugins
 
-1. Go to **Admin → Plugins** in the web interface
+1. Go to **Admin 鈫?Plugins** in the web interface
 2. Toggle the plugin switch to enable
 3. Plugin `init()` is called immediately
 

@@ -1,10 +1,10 @@
-# Web Gajim V3 — Deployment Guide
+# Conjiweb 鈥?Deployment Guide
 
 ## Quick Start (Docker Compose)
 
 ```bash
 # 1. Clone / unzip the project
-cd web-gajim-v3
+cd conjiweb
 
 # 2. Run setup (creates .env, builds, starts all services)
 make setup
@@ -12,7 +12,7 @@ make setup
 
 # 3. Create your first XMPP user
 make create-user
-# or: docker exec -it wgv3-prosody prosodyctl adduser alice@localhost
+# or: docker exec -it conjiweb-prosody prosodyctl adduser alice@localhost
 
 # 4. Open http://localhost and login
 ```
@@ -23,13 +23,13 @@ make create-user
 
 | Service | Container | Internal Port | Exposed Port |
 |---------|-----------|---------------|--------------|
-| Frontend (Nginx) | wgv3-web | 80 | via nginx |
-| FastAPI Backend | wgv3-api | 8000 | via nginx |
-| PostgreSQL | wgv3-postgres | 5432 | 5432 (internal) |
-| Redis | wgv3-redis | 6379 | (internal) |
-| MinIO | wgv3-minio | 9000/9001 | 9000, 9001 |
-| Prosody XMPP | wgv3-prosody | 5222/5280 | 5222, 5280 |
-| Nginx | wgv3-nginx | 80/443 | 80, 443 |
+| Frontend (Nginx) | conjiweb-web | 80 | via nginx |
+| FastAPI Backend | conjiweb-api | 8000 | via nginx |
+| PostgreSQL | conjiweb-postgres | 5432 | 5432 (internal) |
+| Redis | conjiweb-redis | 6379 | (internal) |
+| MinIO | conjiweb-minio | 9000/9001 | 9000, 9001 |
+| Prosody XMPP | conjiweb-prosody | 5222/5280 | 5222, 5280 |
+| Nginx | conjiweb-nginx | 80/443 | 80, 443 |
 
 ---
 
@@ -41,13 +41,13 @@ Run only the infrastructure in Docker; start frontend and backend locally:
 # Start infra only
 make dev
 
-# Terminal 1 — Backend
+# Terminal 1 鈥?Backend
 cd apps/api
 pip install -r requirements.txt
 cp .env.example .env  # edit if needed
 uvicorn app.main:app --reload --port 8000
 
-# Terminal 2 — Frontend
+# Terminal 2 鈥?Frontend
 cd apps/web
 npm install
 npm run dev
@@ -78,7 +78,7 @@ Update `infra/nginx/conf.d/default.conf` with your domains. For HTTPS, use Certb
 
 ```bash
 # Install certbot in nginx container or use Caddy instead
-docker exec wgv3-nginx certbot --nginx -d chat.example.com
+docker exec conjiweb-nginx certbot --nginx -d chat.example.com
 ```
 
 Or use Cloudflare Tunnel for zero-config HTTPS.
@@ -115,19 +115,19 @@ cd apps/api && alembic current
 
 ```bash
 # Add user
-docker exec -it wgv3-prosody prosodyctl adduser alice@localhost
+docker exec -it conjiweb-prosody prosodyctl adduser alice@localhost
 
 # Change password
-docker exec -it wgv3-prosody prosodyctl passwd alice@localhost
+docker exec -it conjiweb-prosody prosodyctl passwd alice@localhost
 
 # Delete user
-docker exec -it wgv3-prosody prosodyctl deluser alice@localhost
+docker exec -it conjiweb-prosody prosodyctl deluser alice@localhost
 
 # List users
-docker exec -it wgv3-prosody prosodyctl list users localhost
+docker exec -it conjiweb-prosody prosodyctl list users localhost
 
 # Check prosody status
-docker exec -it wgv3-prosody prosodyctl status
+docker exec -it conjiweb-prosody prosodyctl status
 ```
 
 ---
@@ -155,14 +155,14 @@ make api-docs
 
 ```bash
 # Backup PostgreSQL
-docker exec wgv3-postgres pg_dump -U webgajim webgajim > backup.sql
+docker exec conjiweb-postgres pg_dump -U conjiweb conjiweb > backup.sql
 
 # Backup MinIO data
-docker run --rm -v wgv3_minio_data:/data -v $(pwd):/backup alpine \
+docker run --rm -v conjiweb_minio_data:/data -v $(pwd):/backup alpine \
   tar czf /backup/minio-backup.tar.gz /data
 
 # Restore PostgreSQL
-cat backup.sql | docker exec -i wgv3-postgres psql -U webgajim webgajim
+cat backup.sql | docker exec -i conjiweb-postgres psql -U conjiweb conjiweb
 ```
 
 ---
