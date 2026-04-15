@@ -4,8 +4,8 @@ Conjiweb 的 Docker 部署版。
 
 ## 版本
 
-- Docker 版：`web_Conji_Dock`（当前）
-- Native 版：`web_Conji_native`
+- Docker 版：`Conjiweb-Docker`（当前）
+- Native 版：`Conjiweb`
 
 ## 快速开始
 
